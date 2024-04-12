@@ -1,15 +1,16 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Create a connection object with your database configuration
 const connection = mysql.createConnection({
-  host: "localhost", // Use the appropriate hostname if your db is not local
-  user: "root", // Your MySQL username
-  password: "yourPassword", // Your MySQL password
-  database: "education_platform", // Your database name
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 // Connect to the database
@@ -26,7 +27,6 @@ app.use(cors());
 app.get("/courses", (req, res) => {
   connection.query("SELECT * FROM courses", (error, results, fields) => {
     if (error) {
-      // Properly handle the error
       console.error("Error fetching courses: " + error);
       res.status(500).send("Error fetching courses");
       return;
