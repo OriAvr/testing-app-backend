@@ -1,9 +1,11 @@
 require("dotenv").config();
-const express = require("express");
 const cors = require("cors");
+const express = require("express");
 const mysql = require("mysql");
 const app = express();
 const PORT = 3000;
+
+app.use(cors());
 
 // Create a connection object with your database configuration
 const connection = mysql.createConnection({
@@ -21,8 +23,6 @@ connection.connect((err) => {
   }
   console.log("Connected to database with ID " + connection.threadId);
 });
-
-app.use(cors());
 
 app.get("/courses", (req, res) => {
   connection.query("SELECT * FROM courses", (error, results, fields) => {
